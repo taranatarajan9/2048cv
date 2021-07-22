@@ -11,6 +11,9 @@ class GameBoard:
             for _ in range(self.length):
                 self.board[row].append(0)
         
+        add_num(self)
+        add_num(self)
+
     def move(self, direction): # function to modify board however the player wants to move
         if direction == Direction.up:
             for row in range (self.length - 1):
@@ -31,7 +34,9 @@ class GameBoard:
             for col in reversed(range(1, self.length)):
                 for row in range(self.length):
                     move_curr(self, direction, row, col)
-
+        
+        clear_zeroes(self)
+        add_num(self)
         return True
 
 
