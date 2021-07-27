@@ -3,6 +3,8 @@ from directions import Direction
 board = GameBoard()
 board.display()
 board.move(Direction.up) # these dont work
-board.move(Direction.right) # these dont work
 print(" ")
 board.display()
+# board.move(Direction.right) 
+# print(" ")
+# board.display()

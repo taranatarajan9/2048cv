@@ -11,8 +11,10 @@ class GameBoard:
             for _ in range(self.length):
                 self.board[row].append(0)
         
-        self.add_num()
-        self.add_num()
+        # self.add_num()
+        # self.add_num()
+        self.board = [[0,2,0,0],[0,2,0,0],[0,2,0,0],[0,0,0,0]]
+        
     
     def display(self):
         for row in self.board:
@@ -22,36 +24,40 @@ class GameBoard:
         if direction == Direction.up:
             for row in range (self.length - 1):
                 for col in range (self.length):
-                    self.move_curr(direction, row, col)# update the board to move the lower spaces up one space 
+                    if (self.combine(Direction.up, row, col)): # update the board to move the lower spaces up one space 
+                        self.move_curr(Direction.up, row + 1, col)
 
         if direction == Direction.down:
-            for row in reversed(range(1, self.length)):
+            for row in range(self.length - 1, 0, -1):
                 for col in range(self.length):
-                    self.move_curr(direction, row, col)
+                    if (self.combine(direction, row, col)): 
+                        self.move_curr(direction, row - 1, col)
 
         if direction == Direction.left:
             for col in (range(1, self.length)):
                 for row in range(self.length):
-                    self.move_curr(direction, row, col)
+                    if (self.combine(direction, col, row)):
+                        self.move_curr(direction, row, col)
 
         if direction == Direction.right:
             for col in reversed(range(1, self.length)):
                 for row in range(self.length):
-                    self.move_curr(direction, row, col)
+                    if (self.combine(direction, col, row)):
+                        self.move_curr(direction, row, col)
         
-        self.clear_zeroes(direction)
-        self.add_num()
+        #self.clear_zeroes(direction)
+        #self.add_num()
         return True
 
 
     def move_curr(self, direction, current_y, current_x): # helper function for when two blocks are added
         if direction == Direction.up:
-            for y_coord in range(current_y + 1, self.length-1):
-                self.board[y_coord][current_x] = self.board[y_coord+1][current_x]
-            self.board[self.length-1][current_x] = 0
+            for y_coord in range(current_y, self.length - 1):
+                self.board[y_coord][current_x] = self.board[y_coord + 1][current_x]
+            self.board[self.length - 1][current_x] = 0
 
         if direction == Direction.down:
-            for y_coord in reversed(range(1, current_y - 1)):
+            for y_coord in range(current_y, 0, -1):
                 self.board[y_coord][current_x] = self.board[y_coord-1][current_x]
             self.board[1][current_x] = 0
         
@@ -65,22 +71,28 @@ class GameBoard:
                 self.board[current_y][x_coord] = self.board[current_y][x_coord - 1]
             self.board[current_y][1] = 0
     
-    def combine(self, direction, current_x, current_y): # helper function to check if there are two tiles to be combined
+    def combine(self, direction, current_y, current_x): # helper function to check if there are two tiles to be combined
         if direction == Direction.up and current_y < self.length - 1:
-            if (self.board[current_y][current_x] == self.board[current_y + 1][current_x]):
-                self.board[current_y][current_x] *= 2
+                if (self.board[current_y][current_x] == self.board[current_y+1][current_x]):
+                    self.board[current_y][current_x] *= 2
+                    return True
         
         if direction == Direction.down and current_y > 0:
             if self.board[current_y][current_x] == self.board[current_y - 1][current_x]:
                 self.board[current_y][current_x] *= 2
+                return True
         
         if direction == Direction.left and current_x > 0:
             if (self.board[current_x] == self.board[current_x - 1]):
                 self.board[current_y][current_x] *= 2
+                return True
         
         if direction == Direction.right and current_x < self.length - 1:
             if self.board[current_y][current_x] == self.board[current_y][current_x + 1]:
                  self.board[current_y][current_x] *= 2
+                 return True
+        
+        return False
 
     def game_over(self): # check if there are no matches 
         for row in range(1, self.length - 1):
@@ -130,3 +142,16 @@ class GameBoard:
             for col in range(self.length):
                 if self.board[row][col] == 0:
                     self.move_curr(dir, row, col)
+    
+    def combine_down(self, row, col): # row, col represents the lower piece
+        if row > 0:
+            if (self.board[row][col] == self.board[row-1][col]):
+                self.board[row][col] *= 2
+                return True
+        return False
+    
+    def move_down(self, row, col): # row, col represents the first location to be replaced
+        for curr_y in range(row, 0, -1):
+            print("here")
+            self.board[curr_y][col] = self.board[curr_y - 1][col]
+        self.board[0][col] = 0
