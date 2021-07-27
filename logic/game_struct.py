@@ -11,32 +11,36 @@ class GameBoard:
             for _ in range(self.length):
                 self.board[row].append(0)
         
-        add_num(self)
-        add_num(self)
+        self.add_num()
+        self.add_num()
+    
+    def display(self):
+        for row in self.board:
+            print (row)
 
     def move(self, direction): # function to modify board however the player wants to move
         if direction == Direction.up:
             for row in range (self.length - 1):
                 for col in range (self.length):
-                    move_curr(self, direction, row, col)# update the board to move the lower spaces up one space 
+                    self.move_curr(direction, row, col)# update the board to move the lower spaces up one space 
 
         if direction == Direction.down:
             for row in reversed(range(1, self.length)):
                 for col in range(self.length):
-                    move_curr(self, direction, row, col)
+                    self.move_curr(direction, row, col)
 
         if direction == Direction.left:
             for col in (range(1, self.length)):
                 for row in range(self.length):
-                    move_curr(self, direction, row, col)
+                    self.move_curr(direction, row, col)
 
         if direction == Direction.right:
             for col in reversed(range(1, self.length)):
                 for row in range(self.length):
-                    move_curr(self, direction, row, col)
+                    self.move_curr(direction, row, col)
         
-        clear_zeroes(self)
-        add_num(self)
+        self.clear_zeroes(direction)
+        self.add_num()
         return True
 
 
@@ -97,10 +101,10 @@ class GameBoard:
         return True
 
     def add_num(self): # Add a random 2 or 4 to the board
-        add_two = random.randint() % 5 != 2
+        add_two = random.randint(0,100) % 5 != 2
 
-        x_coord = random.randint() % self.length
-        y_coord = random.randint() % self.length
+        x_coord = random.randint(0,100) % self.length
+        y_coord = random.randint(0,100) % self.length
 
         count = 0 
         while (self.board[x_coord][y_coord] != 0):
@@ -125,4 +129,4 @@ class GameBoard:
         for row in range(self.length):
             for col in range(self.length):
                 if self.board[row][col] == 0:
-                    move_curr(self, dir, row, col)
+                    self.move_curr(dir, row, col)
