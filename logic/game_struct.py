@@ -11,9 +11,9 @@ class GameBoard:
             for _ in range(self.length):
                 self.board[row].append(0)
         
-        # self.add_num()
-        # self.add_num()
-        self.board = [[0,2,2,0],[0,2,0,0],[0,2,0,0],[0,0,0,0]]
+        self.add_num()
+        self.add_num()
+        # self.board = [[0,2,2,0],[0,2,0,0],[0,2,0,0],[0,0,0,0]]
         
     
     def display(self):
@@ -45,8 +45,8 @@ class GameBoard:
                     if (self.combine(direction, row, col)):
                         self.move_curr(direction, row, col - 1)
         
-        #self.clear_zeroes(direction)
-        #self.add_num()
+        self.clear_zeroes(direction)
+        self.add_num()
         return True
 
 
@@ -140,19 +140,13 @@ class GameBoard:
         return [x_coord, y_coord]
     
     def clear_zeroes(self, dir): 
-        for row in range(self.length):
-            for col in range(self.length):
-                if self.board[row][col] == 0:
-                    self.move_curr(dir, row, col)
-    
-    def combine_right(self, row, col): # row, col represents the lower piece
-        if col > 0 :
-            if (self.board[row][col] == self.board[row][col - 1]):
-                self.board[row][col] *= 2
-                return True
-        return False
-    
-    def move_right(self, row, col): # row, col represents the first location to be replaced
-        for curr_col in range(col, 0, -1):
-            self.board[row][curr_col] = self.board[row][curr_col - 1]
-        self.board[0][col] = 0
+        if dir == Direction.up or dir == Direction.right:
+            for row in range(self.length):
+                for col in range(self.length):
+                    if self.board[row][col] == 0:
+                        self.move_curr(dir, row, col)
+        else:
+            for row in reversed(range(self.length)):
+                for col in reversed(range(self.length)):
+                    if self.board[row][col] == 0:
+                        self.move_curr(dir, row, col)
