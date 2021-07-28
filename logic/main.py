@@ -2,9 +2,15 @@ from game_struct import GameBoard
 from directions import Direction
 board = GameBoard()
 board.display()
-board.move(Direction.up) # these dont work
+board.move(Direction.right)
 print(" ")
 board.display()
+# board.combine_right(0,2)
+# print(" ")
+# board.display()
+# board.move_right(0,1)
+# print(" ")
+# board.display()
 # board.move(Direction.right) 
 # print(" ")
 # board.display()
