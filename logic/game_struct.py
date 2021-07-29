@@ -144,9 +144,15 @@ class GameBoard:
             for row in range(self.length):
                 for col in range(self.length):
                     if self.board[row][col] == 0:
+                        if col == 3:
+                            print('last col')
                         self.move_curr(dir, row, col)
         else:
             for row in reversed(range(self.length)):
                 for col in reversed(range(self.length)):
                     if self.board[row][col] == 0:
                         self.move_curr(dir, row, col)
+    
+    # def get_positions(self, dir, row, col):
+    #     points = []
+    #     if 
