@@ -96,23 +96,25 @@ class GameBoard:
         
         return False
 
-    def game_over(self): # check if there are no matches 
-        for row in range(1, self.length - 1):
-            for col in range(1, self.length - 1):
-                if col > 0:
-                    if self.board[row][col] == self.board[row][col-1]:
-                        return False
-                if row > 0:
-                    if self.board[row][col] == self.board[row-1][col]:
-                        return False
-                if row < self.length - 1:
-                    if self.board[row][col] == self.board[row+1][col]:
-                        return False
-                if col < self.length - 1:
-                    if self.board[row][col] == self.board[row][col+1]:
-                        return False
+    def game_over(self): #return -1 for game not over, 0 for user loses, 1 for user wins
+        for row in range(self.length):
+            for col in range(self.length):
+                if self.board[row][col] == 0:
+                    return -1
+                if self.board[row][col] == 2048:
+                    return 1
 
-        return True
+        for i in range(self.length-1):
+            for j in range(self.length-1):
+                if self.board[i][j] == self.board[i+1][j] or self.board[i][j+1] == self.board[i][j]:
+                    return -1
+        for k in range(self.length-1):  # to check the left/right entries on the last row
+            if self.board[self.length-1][k] == self.board[self.length-1][k+1]:
+                return -1
+        for j in range(self.length-1):  # check up/down entries on last column
+            if self.board[j][self.length-1] == self.board[j+1][self.length-1]:
+                return -1
+        return 0
 
     def add_num(self): # Add a random 2 or 4 to the board
         add_two = random.randint(0,100) % 5 != 2
