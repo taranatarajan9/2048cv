@@ -1,5 +1,6 @@
 from directions import Direction
 import random
+import numpy as np
 
 class GameBoard:
     def __init__(self):
@@ -20,81 +21,99 @@ class GameBoard:
         for row in self.board:
             print (row)
 
-    def move(self, direction): # function to modify board however the player wants to move
-        if direction == Direction.up:
-            for row in range (self.length - 1):
-                for col in range (self.length):
-                    if (self.combine(Direction.up, row, col)): # update the board to move the lower spaces up one space 
-                        self.move_curr(Direction.up, row + 1, col)
+    # def move(self, direction): # function to modify board however the player wants to move
+    #     if direction == Direction.up:
+    #         for row in range (self.length - 1):
+    #             for col in range (self.length):
+    #                 if (self.combine(Direction.up, row, col)): # update the board to move the lower spaces up one space 
+    #                     self.move_curr(Direction.up, row + 1, col)
 
-        if direction == Direction.down:
-            for row in range(self.length - 1, 0, -1):
-                for col in range(self.length):
-                    if (self.combine(direction, row, col)): 
-                        self.move_curr(direction, row - 1, col)
+    #     if direction == Direction.down:
+    #         for row in range(self.length - 1, 0, -1):
+    #             for col in range(self.length):
+    #                 if (self.combine(direction, row, col)): 
+    #                     self.move_curr(direction, row - 1, col)
 
-        if direction == Direction.left:
-            for col in range(1, self.length):
-                for row in range(self.length):
-                    if (self.combine(direction, row, col)):
-                        self.move_curr(direction, row, col + 1)
+    #     if direction == Direction.left:
+    #         for col in range(1, self.length):
+    #             for row in range(self.length):
+    #                 if (self.combine(direction, row, col)):
+    #                     self.move_curr(direction, row, col + 1)
 
-        if direction == Direction.right:
-            for col in range(self.length-1, 0, -1):
-                for row in range(self.length):
-                    if (self.combine(direction, row, col)):
-                        self.move_curr(direction, row, col - 1)
+    #     if direction == Direction.right:
+    #         for col in range(self.length-1, 0, -1):
+    #             for row in range(self.length):
+    #                 if (self.combine(direction, row, col)):
+    #                     self.move_curr(direction, row, col - 1)
         
-        self.clear_zeroes(direction)
-        self.add_num()
-        return True
+    #     self.clear_zeroes(direction)
+    #     self.add_num()
+    #     return True
 
 
-    def move_curr(self, direction, current_y, current_x): # helper function for when two blocks are added
-        if direction == Direction.up:
-            for y_coord in range(current_y, self.length - 1):
-                self.board[y_coord][current_x] = self.board[y_coord + 1][current_x]
-            self.board[self.length - 1][current_x] = 0
+    # def move_curr(self, direction, current_y, current_x): # helper function for when two blocks are added
+    #     if direction == Direction.up:
+    #         for y_coord in range(current_y, self.length - 1):
+    #             self.board[y_coord][current_x] = self.board[y_coord + 1][current_x]
+    #         self.board[self.length - 1][current_x] = 0
 
-        if direction == Direction.down:
-            for y_coord in range(current_y, 0, -1):
-                self.board[y_coord][current_x] = self.board[y_coord-1][current_x]
-            self.board[0][current_x] = 0        
+    #     if direction == Direction.down:
+    #         for y_coord in range(current_y, 0, -1):
+    #             self.board[y_coord][current_x] = self.board[y_coord-1][current_x]
+    #         self.board[0][current_x] = 0        
         
-        if direction == Direction.left:
-            for x_coord in range(current_x, self.length - 1):
-                self.board[current_y][x_coord] = self.board[current_y][x_coord + 1]
-            self.board[current_y][self.length - 1] = 0
+    #     if direction == Direction.left:
+    #         for x_coord in range(current_x, self.length - 1):
+    #             self.board[current_y][x_coord] = self.board[current_y][x_coord + 1]
+    #         self.board[current_y][self.length - 1] = 0
         
-        if direction == Direction.right:
-            for x_coord in range(current_x, 0, - 1):
-                self.board[current_y][x_coord] = self.board[current_y][x_coord - 1]
-            self.board[current_y][0] = 0
+    #     if direction == Direction.right:
+    #         for x_coord in range(current_x, 0, - 1):
+    #             self.board[current_y][x_coord] = self.board[current_y][x_coord - 1]
+    #         self.board[current_y][0] = 0
     
-    def combine(self, direction, current_y, current_x): # helper function to check if there are two tiles to be combined
-        if self.board[current_y][current_x] == 0: 
-            return False
-        if direction == Direction.up and current_y < self.length - 1:
-                if (self.board[current_y][current_x] == self.board[current_y+1][current_x]):
-                    self.board[current_y][current_x] *= 2
-                    return True
+    # def combine(self, direction, current_y, current_x): # helper function to check if there are two tiles to be combined
+    #     if self.board[current_y][current_x] == 0: 
+    #         return False
+    #     if direction == Direction.up and current_y < self.length - 1:
+    #             if (self.board[current_y][current_x] == self.board[current_y+1][current_x]):
+    #                 self.board[current_y][current_x] *= 2
+    #                 return True
         
-        if direction == Direction.down and current_y > 0:
-            if self.board[current_y][current_x] == self.board[current_y - 1][current_x]:
-                self.board[current_y][current_x] *= 2
-                return True
+    #     if direction == Direction.down and current_y > 0:
+    #         if self.board[current_y][current_x] == self.board[current_y - 1][current_x]:
+    #             self.board[current_y][current_x] *= 2
+    #             return True
         
-        if direction == Direction.left and current_x < self.length - 1:
-            if (self.board[current_y][current_x] == self.board[current_y][current_x + 1]):
-                self.board[current_y][current_x] *= 2
-                return True
+    #     if direction == Direction.left and current_x < self.length - 1:
+    #         if (self.board[current_y][current_x] == self.board[current_y][current_x + 1]):
+    #             self.board[current_y][current_x] *= 2
+    #             return True
         
-        if direction == Direction.right and current_x > 0:
-            if self.board[current_y][current_x] == self.board[current_y][current_x - 1]:
-                 self.board[current_y][current_x] *= 2
-                 return True
+    #     if direction == Direction.right and current_x > 0:
+    #         if self.board[current_y][current_x] == self.board[current_y][current_x - 1]:
+    #              self.board[current_y][current_x] *= 2
+    #              return True
         
-        return False
+    #     return False
+
+    def compress_board(self):
+        new = []
+        for j in range(self.length):
+            partial_new = []
+            for i in range(self.length):
+                partial_new.append(0)
+            new.append(partial_new)
+        done = False
+        for i in range(self.length):
+            count = 0
+            for j in range(self.length):
+                if self.board[i][j] != 0:
+                    new[i][count] = self.board[i][j]
+                    if j != count:
+                        done = True
+                    count += 1
+        return new, done
 
     def game_over(self): #return -1 for game not over, 0 for user loses, 1 for user wins
         for row in range(self.length):
@@ -141,19 +160,19 @@ class GameBoard:
         
         return [x_coord, y_coord]
     
-    def clear_zeroes(self, dir): 
-        if dir == Direction.up or dir == Direction.right:
-            for row in range(self.length):
-                for col in range(self.length):
-                    if self.board[row][col] == 0:
-                        if col == 3:
-                            print('last col')
-                        self.move_curr(dir, row, col)
-        else:
-            for row in reversed(range(self.length)):
-                for col in reversed(range(self.length)):
-                    if self.board[row][col] == 0:
-                        self.move_curr(dir, row, col)
+    # def clear_zeroes(self, dir): 
+    #     if dir == Direction.up or dir == Direction.right:
+    #         for row in range(self.length):
+    #             for col in range(self.length):
+    #                 if self.board[row][col] == 0:
+    #                     if col == 3:
+    #                         print('last col')
+    #                     self.move_curr(dir, row, col)
+    #     else:
+    #         for row in reversed(range(self.length)):
+    #             for col in reversed(range(self.length)):
+    #                 if self.board[row][col] == 0:
+    #                     self.move_curr(dir, row, col)
     
     # def get_positions(self, dir, row, col):
     #     points = []
